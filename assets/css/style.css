@@ -1,0 +1,183 @@
+/* ==========================================================================
+   ARCADE LANGUAGE - CSS MASTER V3.2 (VERSÃO FINAL UNIFICADA)
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0d001a, #1a002b, #2c004d);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- NAVBAR --- */
+.main-nav {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #00f0ff;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+/* Centraliza tudo e desgruda da Navbar */
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    width: 100%;
+    min-height: 85vh;       /* Força uma altura mínima para desgrudar do topo */
+    padding: 60px 20px;     /* Padding superior para garantir o respiro da nav */
+}
+
+/* O estilo do seu título neon */
+.cyber-title {
+    font-size: 2.5rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: bold;
+    margin-bottom: 30px;    /* Dá o espaço entre o título e a caixa */
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.8), 0 0 30px rgba(0, 240, 255, 0.4);
+    text-align: center;
+}
+
+/* --- CARDS UNIFICADOS (LOGIN & CADASTRO) --- */
+.login-card, .cadastro-card, .perfil-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    width: 100%;
+    max-width: 420px; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.1);
+    transition: 0.3s ease;
+    margin: 0 auto; /* Reforça a centralização */
+}
+
+.login-card:hover, .cadastro-card:hover {
+    border-color: rgba(0, 240, 255, 0.6);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.2);
+}
+
+/* --- FORMULÁRIO E INPUTS --- */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #00f0ff;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* --- BOTÕES --- */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 30px;
+    background: linear-gradient(90deg, #00f0ff, #008080);
+    color: #000;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    transition: 0.3s;
+    margin-top: 5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px #00f0ff;
+}
+
+/* --- FOOTER DOS CARDS --- */
+.form-footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-footer a {
+    color: #00f0ff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.form-footer a:hover {
+    text-shadow: 0 0 10px #00f0ff;
+}
+
+/* --- FOOTER DA PÁGINA --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    .cyber-title { font-size: 1.8rem; letter-spacing: 2px; }
+    .login-card, .cadastro-card { padding: 25px; }
+    .nav-container { flex-direction: column; gap: 15px; }
+}
+
+/* Container para o link de esqueceu a senha */
+.forgot-container {
+    width: 100%;
+    text-align: right; /* Alinha o link à direita */
+    margin-top: -10px; /* Traz o link mais para perto do input de senha */
+    margin-bottom: 15px;
+}
+
+.forgot-link {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.forgot-link:hover {
+    color: #00f0ff; /* Brilha em ciano no hover */
+    text-shadow: 0 0 8px #00f0ff;
+}
