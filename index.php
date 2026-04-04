@@ -1,3 +1,13 @@
+<?php
+require_once 'includes/funcoes.php';
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+
+// Se já estiver logado, vai direto para o dashboard
+if (isset($_SESSION['id'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -47,17 +57,17 @@
 <div class="cards"> <div class="card">
         <h3>🎯 Missão Diária</h3>
         <p>Complete desafios rápidos e ganhe XP todos os dias.</p>
-        <a href="login.php" class="btn">Iniciar Missão</a>
+        <a href="index.php" class="btn">Iniciar Missão</a>
     </div>
     <div class="card">
         <h3>🧠 Mini Jogos</h3>
         <p>Aprenda com quizzes interativos na Arena.</p>
-        <a href="login.php" class="btn">Jogar Agora</a>
+        <a href="index.php" class="btn">Jogar Agora</a>
     </div>
     <div class="card">
         <h3>🏆 Ranking</h3>
         <p>Suba de nível e ganhe patentes no Quadro de Honra.</p>
-        <a href="ranking.php" class="btn">Ver Ranking</a>
+        <a href="ranking_geral.php" class="btn">Ver Ranking</a>
     </div>
 </div>
 

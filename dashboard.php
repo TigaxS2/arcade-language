@@ -1,7 +1,6 @@
 <?php
-session_start();
-// Proteção simples: se não houver ID na sessão, volta para o login
-if (!isset($_SESSION['id'])) { header("Location: index.php"); exit(); }
+require_once 'includes/funcoes.php';
+verificarLogado();
 
 // Pega o primeiro nome para usar na mensagem
 $primeiroNome = explode(" ", $_SESSION['nome'])[0];

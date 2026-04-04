@@ -1,3 +1,13 @@
+<?php
+require_once 'includes/funcoes.php';
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+
+// Se já estiver logado, não precisa se cadastrar
+if (isset($_SESSION['id'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,20 +23,23 @@
         <h1 class="cyber-title">CRIE SUA CONTA</h1>
         
         <div class="cadastro-card">
-            <form action="auth/cadastro.php" method="POST">
+            <!-- CORRIGIDO: O caminho estava errado (auth/cadastro.php) -->
+            <form action="auth/processa_cadastro.php" method="POST">
                 <input type="text" name="nome" placeholder="Nome Completo" required>
                 <input type="email" name="email" placeholder="Seu melhor e-mail" required>
                 <input type="password" name="senha" placeholder="Crie uma Senha forte" required>
                 <button type="submit" class="btn">Confirmar Cadastro</button>
             </form>
             
-<div class="form-footer" style="margin-top: 25px; text-align: center;">
-    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
-        Já possui uma conta acadêmica? 
-        <br>
-        <a href="login.php" class="cyber-link" style="margin-top: 10px;">← Voltar para o Login!</a>
-    </p>
-</div>
+            <div class="form-footer" style="margin-top: 25px; text-align: center;">
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                    Já possui uma conta acadêmica? 
+                    <br>
+                    <!-- CORRIGIDO: login.php -> index.php -->
+                    <a href="index.php" class="cyber-link" style="margin-top: 10px;">← Voltar para o Login!</a>
+                </p>
+            </div>
+        </div>
     </section>
 
     <footer>

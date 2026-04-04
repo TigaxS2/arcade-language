@@ -28,7 +28,7 @@ $fotoPerfil = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSIO
                 <li><a href="auth/logout.php" class="btn-logout">Sair</a></li>
             
             <?php else: ?>
-                <li><a href="login.php" class="btn-login-nav">Login</a></li>
+                <li><a href="index.php" class="btn-login-nav">Login</a></li>
             <?php endif; ?>
         </ul>
     </div> 

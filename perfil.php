@@ -1,6 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['id'])) { header("Location: login.php"); exit(); }
+require_once 'includes/funcoes.php';
+verificarLogado();
 require_once 'includes/conexao.php';
 
 // Busca dados atualizados do banco para garantir que o e-mail apareça
@@ -17,6 +17,14 @@ $dados = $stmt->get_result()->fetch_assoc();
     <title>Perfil - Arcade Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
+        .auth-section {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Evita tremores de centralização vertical */
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
         .perfil-card {
             background: rgba(20, 20, 30, 0.7);
             backdrop-filter: blur(20px);
@@ -45,12 +53,22 @@ $dados = $stmt->get_result()->fetch_assoc();
 
         .btn-update { width: 100%; margin-top: 15px; }
         
+        /* Container fixo para a foto não balançar o layout */
+        .foto-preview-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
         .perfil-foto-preview {
-            width: 120px; height: 120px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             border: 3px solid #00f0ff;
             object-fit: cover;
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            display: block;
         }
     </style>
 </head>
@@ -64,9 +82,11 @@ $dados = $stmt->get_result()->fetch_assoc();
             <form action="auth/update_perfil.php" method="POST" enctype="multipart/form-data">
                 
                 <div style="text-align: center; margin-bottom: 25px;">
-                    <img src="<?php echo $_SESSION['foto']; ?>" class="perfil-foto-preview" id="previewFoto" 
-                         onerror="this.src='assets/img/default.png';">
-                    <div style="margin-top: 10px;">
+                    <div class="foto-preview-container">
+                        <img src="<?php echo $_SESSION['foto']; ?>" class="perfil-foto-preview" id="previewFoto" 
+                             onerror="this.src='assets/img/default.png';">
+                    </div>
+                    <div>
                         <label for="foto_perfil" class="btn" style="padding: 5px 15px; font-size: 0.8rem; cursor: pointer;">Alterar Avatar</label>
                         <input type="file" name="foto_perfil" id="foto_perfil" hidden onchange="previewImagem(event)">
                     </div>

@@ -9,5 +9,7 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
-// NÃO PODE TER NADA ESCRITO AQUI EMBAIXO
+
+// Define o charset para evitar problemas com acentos (ç, ã, é, etc.)
+$conn->set_charset("utf8mb4");
 ?>

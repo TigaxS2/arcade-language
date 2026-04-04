@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 session_start();
 
 require_once '../includes/conexao.php';
+require_once '../includes/funcoes.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Usamos trim() para remover qualquer espaço acidental no começo ou fim
     $email = trim($_POST['email']);
     $senha = trim($_POST['senha']);
 
@@ -19,20 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultado->num_rows > 0) {
         $usuario = $resultado->fetch_assoc();
         
-        // --- SISTEMA DE VERIFICAÇÃO DUPLA ---
-        $senha_correta = false;
-
-        // 1. Tenta verificar por Hash (Segurança máxima)
+        // --- VERIFICAÇÃO DE HASH ---
         if (password_verify($senha, $usuario['senha'])) {
-            $senha_correta = true;
-        } 
-        // 2. Se falhar, tenta comparação direta (Texto Puro para testes)
-        elseif ($senha === $usuario['senha']) {
-            $senha_correta = true;
-        }
-
-        if ($senha_correta) {
-            // Sucesso! Grava tudo na Sessão
+            // Sucesso! Grava na Sessão
             $_SESSION['id'] = $usuario['id'];
             $_SESSION['nome'] = $usuario['nome'];
             $_SESSION['patente'] = $usuario['patente'];
@@ -44,12 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../dashboard.php");
             exit();
         } else {
-            // Debug: Se quiser ver o que está vindo, descomente a linha abaixo (apenas para teste)
-            // die("Senha digitada: $senha | Senha no banco: " . $usuario['senha']);
-            echo "<script>alert('Senha incorreta!'); window.location.href='../index.php';</script>";
+            alertarERedirecionar('Senha incorreta!', '../index.php');
         }
     } else {
-        echo "<script>alert('E-mail não cadastrado na Arena!'); window.location.href='../index.php';</script>";
+        alertarERedirecionar('E-mail não cadastrado na Arena!', '../index.php');
     }
 }
 ?>

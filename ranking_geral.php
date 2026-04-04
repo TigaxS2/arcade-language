@@ -1,6 +1,7 @@
 <?php
+require_once 'includes/funcoes.php';
+verificarLogado(); // Protege a página
 require_once 'includes/conexao.php'; 
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 // Busca os 10 melhores jogadores por XP
 $sql = "SELECT nome, xp, patente FROM usuarios ORDER BY xp DESC LIMIT 10";
@@ -16,7 +17,7 @@ $result = $conn->query($sql);
         .ranking-table {
             width: 100%;
             max-width: 800px;
-            margin: 40px auto 20px auto; /* Reduzi um pouco a margem inferior */
+            margin: 40px auto 20px auto;
             border-collapse: collapse;
             background: rgba(20, 20, 30, 0.6);
             backdrop-filter: blur(15px);
@@ -48,7 +49,6 @@ $result = $conn->query($sql);
         
         .top-1 td { color: #ffd700 !important; }
 
-        /* Estilo para a área do botão */
         .ranking-footer {
             text-align: center;
             margin-top: 30px;
@@ -98,13 +98,13 @@ $result = $conn->query($sql);
             <tbody>
                 <?php 
                 $pos = 1;
-                if ($result->num_rows > 0):
+                if ($result && $result->num_rows > 0):
                     while($row = $result->fetch_assoc()): ?>
                     <tr class="<?php echo ($pos == 1) ? 'top-1' : ''; ?>">
                         <td>#<?php echo $pos++; ?></td>
                         <td><?php echo htmlspecialchars($row['nome']); ?></td>
                         <td><?php echo htmlspecialchars($row['patente']); ?></td>
-                        <td><span style="color: #00f0ff;"><?php echo $row['xp']; ?></span></td>
+                        <td><span style="color: #00f0ff;"><?php echo (int)$row['xp']; ?></span></td>
                     </tr>
                     <?php endwhile; 
                 else: ?>
