@@ -20,10 +20,13 @@
                 <button type="submit" class="btn">Confirmar Cadastro</button>
             </form>
             
-            <div class="form-footer">
-                <p>Já possui uma conta? <a href="login.php">Voltar para o Login</a></p>
-            </div>
-        </div>
+<div class="form-footer" style="margin-top: 25px; text-align: center;">
+    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+        Já possui uma conta acadêmica? 
+        <br>
+        <a href="login.php" class="cyber-link" style="margin-top: 10px;">← Voltar para o Login!</a>
+    </p>
+</div>
     </section>
 
     <footer>

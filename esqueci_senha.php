@@ -22,9 +22,13 @@
                 <button type="submit" class="btn">Enviar Link de Resgate</button>
             </form>
             
-            <div class="form-footer">
-                <a href="login.php" style="color: #00f0ff; text-decoration: none;">← Voltar ao Login</a>
-            </div>
+       <div class="form-footer" style="margin-top: 25px; text-align: center;">
+    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+        Já possui uma conta acadêmica? 
+        <br>
+        <a href="login.php" class="cyber-link" style="margin-top: 10px;">← Voltar para o Login!</a>
+    </p>
+</div>
         </div>
     </section>
 

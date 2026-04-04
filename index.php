@@ -44,26 +44,22 @@
 
         <hr style="border: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(0,240,255,0.5), transparent); margin: 80px 0;">
 
-        <div class="cards">
-            <div class="card">
-                <h3>🎯 Missão Diária</h3>
-                <p>Complete desafios rápidos e ganhe XP todos os dias para manter sua ofensiva.</p>
-                <a href="login.php" class="btn">Iniciar Missão</a>
-            </div>
-
-            <div class="card">
-                <h3>🧠 Mini Jogos</h3>
-                <p>Aprenda com quizzes interativos e desafios de tempo real na Arena.</p>
-                <a href="login.php" class="btn">Jogar Agora</a>
-            </div>
-
-            <div class="card">
-                <h3>🏆 Ranking</h3>
-                <p>Suba de nível, ganhe patentes e desbloqueie novas conquistas no Quadro de Honra.</p>
-                <a href="ranking.php" class="btn">Ver Ranking</a>
-            </div>
-        </div>
+<div class="cards"> <div class="card">
+        <h3>🎯 Missão Diária</h3>
+        <p>Complete desafios rápidos e ganhe XP todos os dias.</p>
+        <a href="login.php" class="btn">Iniciar Missão</a>
     </div>
+    <div class="card">
+        <h3>🧠 Mini Jogos</h3>
+        <p>Aprenda com quizzes interativos na Arena.</p>
+        <a href="login.php" class="btn">Jogar Agora</a>
+    </div>
+    <div class="card">
+        <h3>🏆 Ranking</h3>
+        <p>Suba de nível e ganhe patentes no Quadro de Honra.</p>
+        <a href="ranking.php" class="btn">Ver Ranking</a>
+    </div>
+</div>
 
     <footer style="margin-top: 100px; padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
         <p>&copy; 2026 Arcade Language | ADS Project</p>
