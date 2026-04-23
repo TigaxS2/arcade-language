@@ -53,5 +53,8 @@ $email_recuperacao = $dados['email'];
             </form>
         </div>
     </section>
+    <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
+        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+    </footer>
 </body>
 </html>

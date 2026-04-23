@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../includes/conexao.php'; // CORRIGIDO: Era db.php
+require_once '../includes/conexao.php';
 require_once '../includes/funcoes.php';
 
 if (!isset($_SESSION['id'])) { 
@@ -8,13 +8,28 @@ if (!isset($_SESSION['id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $resposta = $_POST['resposta'];
-    $usuario_id = (int)$_SESSION['id']; 
+    $pergunta_id = (int)$_POST['pergunta_id'];
+    $resposta_usuario = $_POST['resposta'];
+    $usuario_id = (int)$_SESSION['id'];
 
-    if ($resposta == "correto") {
-        $ganho_xp = 50;
+    // Busca a pergunta no banco para validar a resposta
+    $stmt_p = $conn->prepare("SELECT resposta_correta, xp_recompensa FROM perguntas WHERE id = ?");
+    $stmt_p->bind_param("i", $pergunta_id);
+    $stmt_p->execute();
+    $pergunta = $stmt_p->get_result()->fetch_assoc();
+    $stmt_p->close();
+
+    $is_correto = ($pergunta && $resposta_usuario === $pergunta['resposta_correta']) ? 1 : 0;
+
+    // REGISTRA O RESULTADO DA RESPOSTA
+    $stmt_log_resp = $conn->prepare("INSERT INTO log_respostas (usuario_id, pergunta_id, is_correto) VALUES (?, ?, ?)");
+    $stmt_log_resp->bind_param("iii", $usuario_id, $pergunta_id, $is_correto);
+    $stmt_log_resp->execute();
+
+    if ($is_correto) {
+        $ganho_xp = (int)$pergunta['xp_recompensa'];
         
-        // Atualiza XP com SQL seguro (Prepared Statements)
+        // Atualiza XP com SQL seguro
         $stmt_xp = $conn->prepare("UPDATE usuarios SET xp = xp + ? WHERE id = ?");
         $stmt_xp->bind_param("ii", $ganho_xp, $usuario_id);
         $stmt_xp->execute();
@@ -28,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_busca->close();
         
         $novoXP = $user['xp'];
-        $patente = calcularPatente($novoXP); // Usa a função centralizada
+        $patente = calcularNivelEscolaridade($novoXP); 
         
-        // Atualiza patente se mudou
+        // Atualiza grau de escolaridade se mudou
         $stmt_pat = $conn->prepare("UPDATE usuarios SET patente = ? WHERE id = ?");
         $stmt_pat->bind_param("si", $patente, $usuario_id);
         $stmt_pat->execute();
@@ -40,9 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['xp'] = $novoXP;
         $_SESSION['patente'] = $patente;
 
-        alertarERedirecionar("BOOOM! +$ganho_xp XP. Sua patente agora é: $patente", "../dashboard.php");
+        alertarERedirecionar("PARABÉNS! +$ganho_xp XP. Resposta acadêmica correta!", "../arena.php", "success");
     } else {
-        alertarERedirecionar("Resposta incorreta! Estude mais, recruta.", "../arena.php");
+        alertarERedirecionar("Resposta incorreta! Estude mais, acadêmico.", "../arena.php", "error");
     }
 }
 $conn->close();

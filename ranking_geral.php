@@ -1,127 +1,79 @@
 <?php
 require_once 'includes/funcoes.php';
-verificarLogado(); // Protege a página
+verificarLogado();
 require_once 'includes/conexao.php'; 
 
-// Busca os 10 melhores jogadores por XP
-$sql = "SELECT nome, xp, patente FROM usuarios ORDER BY xp DESC LIMIT 10";
+$sql = "SELECT nome, xp, patente, foto FROM usuarios ORDER BY xp DESC LIMIT 10";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Ranking Geral - Arcade Language</title>
+    <title>Quadro de Honra - Arcade Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        .ranking-table {
-            width: 100%;
-            max-width: 800px;
-            margin: 40px auto 20px auto;
-            border-collapse: collapse;
-            background: rgba(20, 20, 30, 0.6);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        
-        th { 
-            background: rgba(168, 85, 247, 0.8); 
-            color: white; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        td { color: rgba(255,255,255,0.9); }
-
-        tr:hover { background: rgba(0, 240, 255, 0.05); }
-
-        .top-1 { 
-            color: #ffd700 !important; 
-            font-weight: bold; 
-            background: rgba(255, 215, 0, 0.05);
-        }
-        
-        .top-1 td { color: #ffd700 !important; }
-
-        .ranking-footer {
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 50px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            padding: 12px 35px;
-            background: transparent;
-            color: #00f0ff;
-            border: 2px solid #00f0ff;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.3s;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-        }
-
-        .btn-voltar:hover {
-            background: #00f0ff;
-            color: #1a0a2a;
-            box-shadow: 0 0 20px #00f0ff;
-            transform: scale(1.05);
-        }
-    </style>
 </head>
-<body class="area-fundo">
+<body>
     <?php include 'includes/navbar.php'; ?>
 
     <div class="container">
-        <header style="text-align: center; margin-top: 50px;">
-            <h1 class="glow-text">QUADRO DE HONRA</h1>
-            <p style="color: rgba(255,255,255,0.7);">Os estudantes mais lendários da plataforma.</p>
+        <header style="text-align: center; padding: 60px 0 40px;">
+            <h1 class="glow-text" style="font-size: 2.5rem;">QUADRO DE HONRA</h1>
+            <p style="color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; opacity: 0.8;">Os 10 melhores acadêmicos do Campus</p>
         </header>
 
-        <table class="ranking-table">
-            <thead>
-                <tr>
-                    <th>Posição</th>
-                    <th>Nome</th>
-                    <th>Patente</th>
-                    <th>XP</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php 
-                $pos = 1;
-                if ($result && $result->num_rows > 0):
-                    while($row = $result->fetch_assoc()): ?>
-                    <tr class="<?php echo ($pos == 1) ? 'top-1' : ''; ?>">
-                        <td>#<?php echo $pos++; ?></td>
-                        <td><?php echo htmlspecialchars($row['nome']); ?></td>
-                        <td><?php echo htmlspecialchars($row['patente']); ?></td>
-                        <td><span style="color: #00f0ff;"><?php echo (int)$row['xp']; ?></span></td>
+        <div style="max-width: 900px; margin: 0 auto;">
+            <table class="ranking-table">
+                <thead>
+                    <tr style="color: var(--neon-cyan); font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2px;">
+                        <th style="padding: 0 20px 10px;">POS</th>
+                        <th style="padding: 0 20px 10px;">ESTUDANTE</th>
+                        <th style="padding: 0 20px 10px;">GRAU</th>
+                        <th style="padding: 0 20px 10px; text-align: right;">CONHECIMENTO (XP)</th>
                     </tr>
-                    <?php endwhile; 
-                else: ?>
-                    <tr>
-                        <td colspan="4" style="text-align: center;">Nenhum herói encontrado ainda.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php 
+                    $pos = 1;
+                    if ($result && $result->num_rows > 0):
+                        while($row = $result->fetch_assoc()): 
+                            $foto_rank = (!empty($row['foto'])) ? $row['foto'] : 'assets/img/default.png';
+                            $isTop = ($pos == 1);
+                        ?>
+                        <tr class="<?php echo $isTop ? 'top-1' : ''; ?>" style="<?php echo $isTop ? 'border: 1px solid var(--neon-gold);' : ''; ?>">
+                            <td style="font-family: 'Orbitron'; font-weight: bold; color: <?php echo $isTop ? 'var(--neon-gold)' : 'var(--neon-cyan)'; ?>;">
+                                #<?php echo str_pad($pos++, 2, '0', STR_PAD_LEFT); ?>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid <?php echo $isTop ? 'var(--neon-gold)' : 'var(--neon-cyan)'; ?>; background: url('<?php echo $foto_rank; ?>') center/cover; flex-shrink: 0;"></div>
+                                    <span style="font-weight: bold; font-size: 1.1rem; <?php echo $isTop ? 'color: var(--neon-gold);' : ''; ?>"><?php echo htmlspecialchars($row['nome']); ?></span>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim);"><?php echo htmlspecialchars($row['patente']); ?></span>
+                            </td>
+                            <td style="text-align: right; font-family: 'Orbitron'; font-weight: bold; color: var(--neon-cyan);">
+                                <?php echo number_format($row['xp'], 0, '', '.'); ?>
+                            </td>
+                        </tr>
+                        <?php endwhile; 
+                    else: ?>
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; opacity: 0.5;">Nenhum registro acadêmico encontrado.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
-        <div class="ranking-footer">
-            <a href="dashboard.php" class="btn-voltar">Voltar</a>
+        <div style="text-align: center; margin: 50px 0;">
+            <a href="dashboard.php" class="btn">Retornar ao Terminal</a>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Arcade Language | ADS Project</p>
+    <footer style="padding: 40px 0; text-align: center; opacity: 0.3;">
+        <p>&copy; 2026 Arcade Language | Academic Management System</p>
     </footer>
 </body>
 </html>

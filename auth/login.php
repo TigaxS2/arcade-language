@@ -24,19 +24,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Sucesso! Grava na Sessão
             $_SESSION['id'] = $usuario['id'];
             $_SESSION['nome'] = $usuario['nome'];
-            $_SESSION['patente'] = $usuario['patente'];
+            $_SESSION['patente'] = $usuario['patente']; // Grau de Escolaridade
             $_SESSION['xp'] = $usuario['xp'];
+            $_SESSION['nivel_acesso'] = $usuario['nivel_acesso']; // Admin/User
             
             // Define a foto ou a padrão
             $_SESSION['foto'] = (!empty($usuario['foto'])) ? $usuario['foto'] : 'assets/img/default.png';
 
+            // REGISTRA ACESSO DIÁRIO
+            $hoje = date('Y-m-d');
+            $stmt_log = $conn->prepare("INSERT IGNORE INTO log_acessos (usuario_id, data_acesso) VALUES (?, ?)");
+            $stmt_log->bind_param("is", $_SESSION['id'], $hoje);
+            $stmt_log->execute();
+
             header("Location: ../dashboard.php");
             exit();
         } else {
-            alertarERedirecionar('Senha incorreta!', '../index.php');
+            alertarERedirecionar('Senha incorreta!', '../login.php', 'error');
         }
     } else {
-        alertarERedirecionar('E-mail não cadastrado na Arena!', '../index.php');
+        alertarERedirecionar('E-mail não cadastrado na Faculdade!', '../login.php', 'error');
     }
 }
 ?>

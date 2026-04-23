@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../includes/conexao.php';
+require_once '../includes/funcoes.php';
 
 if (!isset($_SESSION['id'])) { 
     header("Location: ../index.php"); 
@@ -25,13 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $db_caminho = 'assets/img/' . $novo_nome_arquivo; 
 
         if ($_FILES['foto_perfil']['size'] > 2097152) {
-            echo "<script>alert('A imagem é muito grande! Máximo 2MB.'); window.history.back();</script>";
-            $erro = true;
+            alertarERedirecionar("A imagem é muito grande! Máximo 2MB.", "../perfil.php", "error");
         }
 
         if (!in_array($extensao, ['jpg', 'jpeg', 'png', 'gif'])) {
-            echo "<script>alert('Apenas JPG, PNG ou GIF.'); window.history.back();</script>";
-            $erro = true;
+            alertarERedirecionar("Apenas JPG, PNG ou GIF.", "../perfil.php", "error");
         }
 
         if (!$erro && move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $pasta_destino . $novo_nome_arquivo)) {
@@ -62,14 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt_senha->execute();
             $stmt_senha->close();
         } else {
-            echo "<script>alert('As senhas não coincidem!'); window.history.back();</script>";
-            $erro = true;
+            alertarERedirecionar("As senhas não coincidem!", "../perfil.php", "error");
         }
     }
 
     // --- FINALIZAÇÃO ---
     if (!$erro) {
-        echo "<script>alert('Perfil e segurança atualizados, Soldado!'); window.location.href='../dashboard.php';</script>";
+        alertarERedirecionar("Perfil e segurança atualizados, Acadêmico!", "../dashboard.php", "success");
     }
 }
 $conn->close();

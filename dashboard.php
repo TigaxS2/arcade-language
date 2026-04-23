@@ -10,159 +10,80 @@ $primeiroNome = explode(" ", $_SESSION['nome'])[0];
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel - Arcade Language</title>
+    <title>Painel Acadêmico - Arcade Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        /* CSS EXCLUSIVO DA DASHBOARD */
-        .dashboard-layout {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            padding: 50px 20px;
-            gap: 30px;
-        }
-
-        /* Card de Perfil à Esquerda */
-        .user-status-card {
-            background: rgba(20, 20, 30, 0.6);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.1);
-        }
-
-        .user-status-card .status-avatar {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 4px solid #00f0ff;
-            object-fit: cover;
-            margin-bottom: 15px;
-            box-shadow: 0 0 20px #00f0ff;
-        }
-
-        .user-status-card h1 { 
-            font-size: 1.8rem; 
-            color: #fff; 
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); 
-        }
-
-        .user-stats-list {
-            list-style: none;
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-align: left;
-        }
-
-        .user-stats-list li { margin-bottom: 10px; font-size: 1.1rem; }
-        .stat-value { color: #00f0ff; font-weight: bold; }
-
-        /* Área de Ações à Direita */
-        .actions-container {
-            flex: 1;
-            max-width: 700px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        /* Card de Ação (Glassmorphism) */
-        .action-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
-            transition: 0.3s;
-        }
-
-        .action-card:hover {
-            border-color: #00f0ff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .action-card h3 { color: #00f0ff; margin-bottom: 10px; font-size: 1.4rem; }
-        .action-card p { color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; line-height: 1.4; }
-
-        /* Ajuste do botão dentro da action-card */
-        .action-card .btn {
-            width: 100%;
-            text-align: center;
-        }
-
-        .btn-secondary {
-            background: rgba(0, 240, 255, 0.1);
-            color: #00f0ff;
-            border: 1px solid #00f0ff;
-            box-shadow: none;
-        }
-
-        .btn-secondary:hover { background: #00f0ff; color: #1a0a2a; }
-
-        @media (max-width: 900px) {
-            .dashboard-layout { flex-direction: column; align-items: center; }
-        }
-    </style>
 </head>
 <body class="area-fundo">
     <?php include 'includes/navbar.php'; ?>
 
     <div class="container">
-        <header style="margin-bottom: 0px;">
-            <h1>Terminal de Comando</h1>
-            <p>Seja bem-vindo de volta, <?php echo htmlspecialchars($primeiroNome); ?>! Próximo Boss te aguarda.</p>
+        <header style="padding: 40px 0; text-align: center;">
+            <h1 class="glow-text" style="font-size: 2.5rem;">Terminal Acadêmico</h1>
+            <p style="opacity: 0.8;">Seja bem-vindo, <?php echo htmlspecialchars($primeiroNome); ?>! Seu próximo desafio acadêmico está pronto.</p>
         </header>
 
-        <section class="dashboard-layout">
+        <section style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; align-items: flex-start;">
             
-            <div class="user-status-card">
-                <img src="<?php echo $_SESSION['foto']; ?>" class="status-avatar" alt="Sua Foto">
-                <h1><?php echo htmlspecialchars($_SESSION['nome']); ?></h1>
+            <!-- STATUS DO ESTUDANTE -->
+            <div class="user-status-card" style="flex: 1; max-width: 350px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="avatar-container" style="margin-bottom: 20px;">
+                    <?php 
+                        $foto = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSION['foto'] : 'assets/img/default.png';
+                    ?>
+                    <img src="<?php echo $foto; ?>" class="status-avatar" alt="" onerror="this.src='assets/img/default.png';">
+                </div>
                 
-                <ul class="user-stats-list">
-                    <li>🎖️ Patente: <span class="stat-value"><?php echo htmlspecialchars($_SESSION['patente']); ?></span></li>
-                    <li>💎 XP: <span class="stat-value"><?php echo htmlspecialchars($_SESSION['xp']); ?></span> / <span class="stat-value">500</span></li>
-                    <li>✅ Dias Seguidos: <span class="stat-value">12</span></li>
+                <h2 style="text-align: center; margin-bottom: 20px; width: 100%;"><?php echo htmlspecialchars($_SESSION['nome']); ?></h2>
+                
+                <ul style="list-style: none; width: 100%;">
+                    <li style="margin-bottom: 10px;">🎖️ Nível: <span style="color: var(--neon-cyan); font-weight: bold;"><?php echo htmlspecialchars($_SESSION['patente']); ?></span></li>
+                    <li style="margin-bottom: 5px;">💎 XP: <span style="color: var(--neon-cyan); font-weight: bold;"><?php echo htmlspecialchars($_SESSION['xp']); ?></span> / 500</li>
+                    
+                    <div class="xp-progress-container">
+                        <?php 
+                            $percentual = ($_SESSION['xp'] / 500) * 100; 
+                            if ($percentual > 100) $percentual = 100;
+                        ?>
+                        <div class="xp-progress-bar" style="width: <?php echo $percentual; ?>%;"></div>
+                    </div>
                 </ul>
 
-                <a href="perfil.php" class="btn btn-secondary" style="margin-top: 20px;">Atualizar Perfil (Foto)</a>
+                <a href="perfil.php" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">Configurações de Aluno</a>
             </div>
 
-            <div class="actions-container">
+            <!-- AÇÕES PRINCIPAIS -->
+            <div style="flex: 2; min-width: 300px; display: grid; gap: 20px;">
                 
                 <div class="action-card">
-                    <div>
-                        <h3>🎮 ARENA DE DESAFIOS</h3>
-                        <p>Participe de batalhas de vocabulário e gramática. Onde cada vitória é XP na conta!</p>
-                    </div>
-                    <a href="arena.php" class="btn">Entrar na Arena</a>
+                    <h3>🎮 LABORATÓRIO DE IDIOMAS</h3>
+                    <p style="margin: 10px 0 20px; opacity: 0.8;">Participe de desafios interativos. Cada acerto acelera sua graduação acadêmica.</p>
+                    <a href="arena.php" class="btn" style="width: 100%;">Acessar Laboratório</a>
                 </div>
 
                 <div class="action-card">
-                    <div>
-                        <h3>🏆 QUADRO DE HONRA</h3>
-                        <p>Veja quem são os grandes mestres dos idiomas. Onde você está no ranking?</p>
-                    </div>
-                    <a href="ranking_geral.php" class="btn btn-secondary">Ver Quadro de Honra</a>
+                    <h3>🏆 QUADRO DE HONRA</h3>
+                    <p style="margin: 10px 0 20px; opacity: 0.8;">Confira sua posição no ranking global da faculdade.</p>
+                    <a href="ranking_geral.php" class="btn btn-secondary" style="width: 100%;">Ver Ranking</a>
                 </div>
+
+                <?php if(isset($_SESSION['nivel_acesso']) && $_SESSION['nivel_acesso'] === 'admin'): ?>
+                <div class="action-card" style="border-color: var(--neon-magenta);">
+                    <h3 style="color: var(--neon-magenta);">🛠️ PAINEL DA FACULDADE</h3>
+                    <p style="margin: 10px 0 20px; opacity: 0.8;">Gestão de questões e acompanhamento de estudantes.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="admin_perguntas.php" class="btn" style="flex: 1; background: var(--neon-magenta);">Questões</a>
+                        <a href="admin_usuarios.php" class="btn btn-secondary" style="flex: 1; color: var(--neon-magenta); border-color: var(--neon-magenta);">Estudantes</a>
+                    </div>
+                </div>
+                <?php endif; ?>
 
             </div>
 
         </section>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Arcade Language | ADS Project</p>
+    <footer style="padding: 60px 0; text-align: center; opacity: 0.4;">
+        <p>&copy; 2026 Arcade Language | Academic Management System</p>
     </footer>
 </body>
 </html>

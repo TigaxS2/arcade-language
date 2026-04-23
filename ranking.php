@@ -91,7 +91,7 @@ $result = $conn->query($sql);
                 <tr>
                     <th>Posição</th>
                     <th>Nome</th>
-                    <th>Patente</th>
+                    <th>Nível</th>
                     <th>XP</th>
                 </tr>
             </thead>
@@ -121,7 +121,7 @@ $result = $conn->query($sql);
     </div>
 
     <footer>
-        <p>&copy; 2026 Arcade Language | ADS Project</p>
+        <p>&copy; 2026 Arcade Language | Academic Management System</p>
     </footer>
 </body>
 </html>

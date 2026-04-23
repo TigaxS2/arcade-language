@@ -3,7 +3,7 @@ require_once 'includes/funcoes.php';
 verificarLogado();
 require_once 'includes/conexao.php';
 
-// Busca dados atualizados do banco para garantir que o e-mail apareça
+// Busca dados atualizados
 $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $_SESSION['id']);
 $stmt->execute();
@@ -14,124 +14,83 @@ $dados = $stmt->get_result()->fetch_assoc();
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Perfil - Arcade Language</title>
+    <title>Configurações Acadêmicas - Arcade Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        .auth-section {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Evita tremores de centralização vertical */
-            padding: 60px 20px;
-            min-height: 100vh;
-        }
-
-        .perfil-card {
-            background: rgba(20, 20, 30, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            padding: 35px;
-            width: 100%;
-            max-width: 550px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .section-title {
-            color: #00f0ff;
-            font-size: 0.9rem;
+        .perfil-layout { display: flex; justify-content: center; padding: 60px 20px; }
+        .perfil-card { width: 100%; max-width: 500px; }
+        .section-divider { 
+            border-bottom: 1px solid var(--glass-border); 
+            margin: 30px 0 20px; 
+            padding-bottom: 10px;
+            color: var(--neon-cyan);
+            font-size: 0.8rem;
             letter-spacing: 2px;
-            margin: 20px 0 10px;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            padding-bottom: 5px;
             text-transform: uppercase;
-        }
-
-        .input-group { margin-bottom: 15px; text-align: left; }
-        label { color: rgba(255,255,255,0.7); font-size: 0.85rem; display: block; margin-bottom: 5px; }
-        
-        input[readonly] { background: rgba(255,255,255,0.05); cursor: not-allowed; border-color: rgba(255,255,255,0.1); }
-
-        .btn-update { width: 100%; margin-top: 15px; }
-        
-        /* Container fixo para a foto não balançar o layout */
-        .foto-preview-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
-            position: relative;
-        }
-
-        .perfil-foto-preview {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #00f0ff;
-            object-fit: cover;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
-            display: block;
         }
     </style>
 </head>
-<body class="area-fundo">
+<body>
     <?php include 'includes/navbar.php'; ?>
 
-    <section class="auth-section">
+    <div class="container perfil-layout">
         <div class="perfil-card">
-            <h2 class="glow-text" style="text-align: center; font-size: 1.8rem;">CONFIGURAÇÕES DE CONTA</h2>
+            <h1 class="glow-text" style="text-align: center; font-size: 2rem; margin-bottom: 40px;">PERFIL ACADÊMICO</h1>
             
             <form action="auth/update_perfil.php" method="POST" enctype="multipart/form-data">
                 
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <div class="foto-preview-container">
-                        <img src="<?php echo $_SESSION['foto']; ?>" class="perfil-foto-preview" id="previewFoto" 
+                <!-- AVATAR UPLOAD -->
+                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; width: 100%;">
+                    <div class="avatar-container" style="width: 160px; height: 160px; margin: 0; position: relative; display: flex; justify-content: center; align-items: center; border-radius: 50%; padding: 0; overflow: hidden;">
+                        <img src="<?php echo $_SESSION['foto']; ?>" class="status-avatar" id="previewFoto" 
+                             style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
                              onerror="this.src='assets/img/default.png';">
                     </div>
-                    <div>
-                        <label for="foto_perfil" class="btn" style="padding: 5px 15px; font-size: 0.8rem; cursor: pointer;">Alterar Avatar</label>
-                        <input type="file" name="foto_perfil" id="foto_perfil" hidden onchange="previewImagem(event)">
-                    </div>
+                    <label for="foto_perfil" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.7rem; margin-top: 20px;">Alterar Avatar</label>
+                    <input type="file" name="foto_perfil" id="foto_perfil" hidden onchange="previewImagem(event)">
                 </div>
 
-                <div class="section-title">Dados Pessoais</div>
+                <div class="section-divider">Dados de Identificação</div>
                 
                 <div class="input-group">
-                    <label>Nome de Exibição:</label>
+                    <label>Nome Acadêmico</label>
                     <input type="text" name="nome" value="<?php echo htmlspecialchars($_SESSION['nome']); ?>" required>
                 </div>
 
                 <div class="input-group">
-                    <label>E-mail de Recuperação:</label>
+                    <label>E-mail de Contato</label>
                     <input type="email" name="email" value="<?php echo htmlspecialchars($dados['email']); ?>" required>
                 </div>
 
-                <div class="section-title">Segurança (Trocar Senha)</div>
-                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-bottom: 10px;">Deixe em branco para manter a senha atual.</p>
+                <div class="section-divider">Segurança da Chave</div>
                 
                 <div class="input-group">
-                    <label>Nova Senha:</label>
+                    <label>Nova Chave de Acesso (Deixe em branco para manter)</label>
                     <input type="password" name="nova_senha" placeholder="••••••••">
                 </div>
 
                 <div class="input-group">
-                    <label>Confirmar Nova Senha:</label>
+                    <label>Confirmar Nova Chave</label>
                     <input type="password" name="confirma_senha" placeholder="••••••••">
                 </div>
 
-                <button type="submit" class="btn btn-update">Salvar Todas as Alterações</button>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">ATUALIZAR REGISTROS</button>
             </form>
 
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="dashboard.php" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem;">← Voltar ao Terminal</a>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="dashboard.php" class="cyber-link-bold">← Voltar ao Terminal Acadêmico</a>
             </div>
         </div>
-    </section>
+    </div>
+
+    <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
+        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+    </footer>
 
     <script>
         function previewImagem(event) {
-            var reader = new FileReader();
-            reader.onload = function(){
-                document.getElementById('previewFoto').src = reader.result;
-            }
+            const reader = new FileReader();
+            reader.onload = () => document.getElementById('previewFoto').src = reader.result;
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>

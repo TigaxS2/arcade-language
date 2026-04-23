@@ -2,7 +2,6 @@
 require_once 'includes/funcoes.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-// Se já estiver logado, não precisa se cadastrar
 if (isset($_SESSION['id'])) {
     header("Location: dashboard.php");
     exit();
@@ -12,38 +11,53 @@ if (isset($_SESSION['id'])) {
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Arcade Language - Cadastro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrícula Acadêmica - Arcade Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .auth-page { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 80px); padding: 20px; }
+        .cadastro-card { width: 100%; max-width: 450px; }
+    </style>
 </head>
-<body class="area-fundo">
+<body>
     <?php include 'includes/navbar.php'; ?>
 
-    <section class="auth-container">
-        
-        <h1 class="cyber-title">CRIE SUA CONTA</h1>
-        
+    <div class="auth-page">
         <div class="cadastro-card">
-            <!-- CORRIGIDO: O caminho estava errado (auth/cadastro.php) -->
+            <header style="text-align: center; margin-bottom: 35px;">
+                <h1 class="glow-text" style="font-size: 2.5rem; margin-bottom: 5px;">MATRÍCULA</h1>
+                <p style="font-size: 0.85rem; color: var(--neon-cyan); letter-spacing: 3px; opacity: 0.8;">REGISTRO DE NOVO ACADÊMICO</p>
+            </header>
+            
             <form action="auth/processa_cadastro.php" method="POST">
-                <input type="text" name="nome" placeholder="Nome Completo" required>
-                <input type="email" name="email" placeholder="Seu melhor e-mail" required>
-                <input type="password" name="senha" placeholder="Crie uma Senha forte" required>
-                <button type="submit" class="btn">Confirmar Cadastro</button>
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" placeholder="Ex: Alan Turing" required>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail Institucional</label>
+                    <input type="email" name="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Definir Chave de Acesso</label>
+                    <input type="password" name="senha" id="senha" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">FINALIZAR MATRÍCULA</button>
             </form>
             
-            <div class="form-footer" style="margin-top: 25px; text-align: center;">
-                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">
-                    Já possui uma conta acadêmica? 
-                    <br>
-                    <!-- CORRIGIDO: login.php -> index.php -->
-                    <a href="index.php" class="cyber-link" style="margin-top: 10px;">← Voltar para o Login!</a>
+            <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; text-align: center;">
+                <p style="font-size: 0.9rem; opacity: 0.8;">
+                    Já possui registro? <a href="login.php" class="cyber-link-bold">Acessar Terminal</a>
                 </p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <p>&copy; 2026 Arcade Language | ADS Project</p>
+    <footer style="padding: 40px 0; text-align: center; opacity: 0.3;">
+        <p>&copy; 2026 Arcade Language | Academic Management System</p>
     </footer>
 </body>
 </html>

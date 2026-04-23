@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 // Lógica para o usuário logado
-$nomeCompleto = isset($_SESSION['nome']) ? $_SESSION['nome'] : "Recruta";
+$nomeCompleto = isset($_SESSION['nome']) ? $_SESSION['nome'] : "Estudante";
 $primeiroNome = explode(" ", $nomeCompleto)[0];
 
 // Verifica a foto: se não existir na sessão ou no servidor, usa a default
@@ -18,6 +18,10 @@ $fotoPerfil = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSIO
             <li><a href="about.php">Quem Somos</a></li>
             <li><a href="ranking_geral.php">Ranking</a></li>
             
+            <?php if(isset($_SESSION['nivel_acesso']) && $_SESSION['nivel_acesso'] === 'admin'): ?>
+                <li><a href="admin_gestao.php" style="color: var(--neon-magenta); font-weight: bold;">Gestão</a></li>
+            <?php endif; ?>
+            
             <?php if(isset($_SESSION['id'])): ?>
                 <li class="user-profile-nav">
                     <a href="perfil.php" class="nav-user">
@@ -28,7 +32,7 @@ $fotoPerfil = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSIO
                 <li><a href="auth/logout.php" class="btn-logout">Sair</a></li>
             
             <?php else: ?>
-                <li><a href="index.php" class="btn-login-nav">Login</a></li>
+                <li><a href="login.php" class="btn-login-nav">Login</a></li>
             <?php endif; ?>
         </ul>
     </div> 
@@ -113,4 +117,72 @@ $fotoPerfil = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSIO
     border-radius: 20px; 
     color: #00f0ff !important;
 }
+
+/* --- ESTILOS DO MODAL CUSTOMIZADO --- */
+.modal-overlay {
+    display: none !important; /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #0a0a15;
+    border: 2px solid #00f0ff;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+}
+
+.modal-content h2 { color: #00f0ff; margin-bottom: 15px; font-size: 1.2rem; }
+.modal-content p { color: #fff; margin-bottom: 25px; font-size: 1rem; }
+
+.modal-input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #00f0ff;
+    color: white;
+    margin-bottom: 20px;
+    display: none !important; /* Escondido até ser necessário (ex: prompt) */
+}
+
+.modal-buttons { display: flex; gap: 15px; justify-content: center; }
+
+.btn-cancel {
+    background: transparent;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover { background: #ff4d4d; color: white; }
 </style>
+
+<!-- MODAL CUSTOMIZADO (Substituto de Confirm/Prompt) -->
+<div id="custom-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 id="modal-title">SISTEMA</h2>
+        <p id="modal-message">Mensagem do sistema...</p>
+        <input type="text" id="modal-input" class="modal-input">
+        <div class="modal-buttons">
+            <button id="modal-cancel" class="btn-cancel">CANCELAR</button>
+            <button id="modal-confirm" class="btn">CONFIRMAR</button>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT GLOBAL -->
+<script src="assets/js/script.js"></script>
