@@ -9,6 +9,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = htmlspecialchars(trim($_POST['nome']));
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $senha_pura = $_POST['senha'];
+    $turnstileResponse = $_POST['cf-turnstile-response'];
+
+    // --- VERIFICAÇÃO TURNSTILE ---
+    $secret = "1x0000000000000000000000000000000AA";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://challenges.cloudflare.com/turnstile/v0/siteverify");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'secret'   => $secret,
+        'response' => $turnstileResponse,
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+    ]));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    $responseData = json_decode($response, true);
+
+    if (!$responseData['success']) {
+        alertarERedirecionar("Falha na validação de segurança (CAPTCHA).", "../cadastro.php", "error");
+    }
 
     // 1. VALIDAÇÃO BÁSICA
     if (strlen($senha_pura) < 6) {

@@ -32,7 +32,7 @@ $total_restante = $conn->query($total_restante_query)->fetch_assoc()['total'];
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Laboratório - Arcade Language</title>
+    <title>Laboratório - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .lab-page { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: calc(100vh - 100px); padding: 20px; }
@@ -93,7 +93,7 @@ $total_restante = $conn->query($total_restante_query)->fetch_assoc()['total'];
         </div>
     </div>
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

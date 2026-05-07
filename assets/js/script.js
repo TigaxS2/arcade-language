@@ -1,8 +1,8 @@
 /**
- * ARCADE LANGUAGE - ACADEMIC CORE JS V5.0
+ * ARCADIUS LANGUAGE - ACADEMIC CORE JS V5.0
  */
 
-const ArcadeUI = (() => {
+const ArcadiusUI = (() => {
     // --- PRIVATE METHODS ---
     const _createToastContainer = () => {
         if (document.getElementById('toast-container')) return;
@@ -16,8 +16,8 @@ const ArcadeUI = (() => {
         init: () => {
             console.log("Terminal Acadêmico: Ativo.");
             _createToastContainer();
-            ArcadeUI.handleURLMessages();
-            ArcadeUI.initModals();
+            ArcadiusUI.handleURLMessages();
+            ArcadiusUI.initModals();
         },
 
         showToast: (message, type = 'info') => {
@@ -39,7 +39,7 @@ const ArcadeUI = (() => {
         handleURLMessages: () => {
             const params = new URLSearchParams(window.location.search);
             if (params.has('msg')) {
-                ArcadeUI.showToast(params.get('msg'), params.get('type') || 'info');
+                ArcadiusUI.showToast(params.get('msg'), params.get('type') || 'info');
                 // Limpa a URL sem recarregar a página
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
@@ -76,4 +76,4 @@ const ArcadeUI = (() => {
     };
 })();
 
-document.addEventListener('DOMContentLoaded', ArcadeUI.init);
+document.addEventListener('DOMContentLoaded', ArcadiusUI.init);

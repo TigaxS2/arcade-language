@@ -12,8 +12,9 @@ if (isset($_SESSION['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrícula Acadêmica - Arcade Language</title>
+    <title>Matrícula Acadêmica - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         .auth-page { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 80px); padding: 20px; }
         .cadastro-card { width: 100%; max-width: 450px; }
@@ -45,6 +46,8 @@ if (isset($_SESSION['id'])) {
                     <input type="password" name="senha" id="senha" placeholder="••••••••" required>
                 </div>
                 
+                <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" style="margin-bottom: 15px;"></div>
+                
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">FINALIZAR MATRÍCULA</button>
             </form>
             
@@ -57,7 +60,7 @@ if (isset($_SESSION['id'])) {
     </div>
 
     <footer style="padding: 40px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

@@ -8,8 +8,13 @@ if (isset($_POST['excluir_id'])) {
     $id_excluir = (int)$_POST['excluir_id'];
     
     // Deleta logs e depois a pergunta
-    $conn->query("DELETE FROM log_respostas WHERE pergunta_id = $id_excluir");
-    $res = $conn->query("DELETE FROM perguntas WHERE id = $id_excluir");
+    $stmt_log = $conn->prepare("DELETE FROM log_respostas WHERE pergunta_id = ?");
+    $stmt_log->bind_param("i", $id_excluir);
+    $stmt_log->execute();
+
+    $stmt_del = $conn->prepare("DELETE FROM perguntas WHERE id = ?");
+    $stmt_del->bind_param("i", $id_excluir);
+    $res = $stmt_del->execute();
     
     if ($res) {
         header("Location: admin_perguntas.php?msg=Pergunta Removida do Campus!&type=success");
@@ -53,7 +58,10 @@ $perguntas = $conn->query("SELECT * FROM perguntas ORDER BY id DESC");
 $edit_data = null;
 if (isset($_GET['editar'])) {
     $id_edit = (int)$_GET['editar'];
-    $edit_data = $conn->query("SELECT * FROM perguntas WHERE id = $id_edit")->fetch_assoc();
+    $stmt_edit = $conn->prepare("SELECT * FROM perguntas WHERE id = ?");
+    $stmt_edit->bind_param("i", $id_edit);
+    $stmt_edit->execute();
+    $edit_data = $stmt_edit->get_result()->fetch_assoc();
 }
 ?>
 
@@ -145,7 +153,7 @@ if (isset($_GET['editar'])) {
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

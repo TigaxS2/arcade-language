@@ -34,7 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($stmt_update->execute()) {
         // 4. Deleta o token usado para evitar reutilização
-        $conn->query("DELETE FROM recuperacao_senha WHERE email = '$email'");
+        $stmt_del = $conn->prepare("DELETE FROM recuperacao_senha WHERE email = ?");
+        $stmt_del->bind_param("s", $email);
+        $stmt_del->execute();
         
         alertarERedirecionar("Sua senha foi redefinida com sucesso!", "../index.php", "success");
     } else {

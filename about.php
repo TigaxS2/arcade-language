@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Sobre o Campus - Arcade Language</title>
+    <title>Sobre o Campus - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .about-layout { display: flex; justify-content: center; padding: 60px 20px; }
@@ -44,12 +44,12 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
         <div class="about-card card">
             <header style="text-align: center; margin-bottom: 40px;">
                 <h1 class="glow-text" style="font-size: 2.5rem;">ARQUIVOS DO CAMPUS</h1>
-                <p style="color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; opacity: 0.8;">Manuscritos sobre a fundação do Arcade Language</p>
+                <p style="color: var(--neon-cyan); letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; opacity: 0.8;">Manuscritos sobre a fundação do Arcadius Language</p>
             </header>
 
             <div class="section-divider" style="border-bottom: 1px solid var(--glass-border); margin: 30px 0 20px; padding-bottom: 10px; color: var(--neon-cyan); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">A Visão Acadêmica</div>
             <p style="line-height: 1.8; opacity: 0.9; margin-bottom: 20px;">
-                O <strong>Arcade Language</strong> nasceu da necessidade de transformar a barreira linguística em uma jornada de exploração e conquista. 
+                O <strong>Arcadius Language</strong> nasceu da necessidade de transformar a barreira linguística em uma jornada de exploração e conquista. 
                 Utilizando os pilares da gamificação acadêmica, nosso objetivo é que cada estudante sinta a progressão real de seu conhecimento através de XP, 
                 conquistas de novos graus e desafios constantes em nosso Laboratório.
             </p>
@@ -89,7 +89,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

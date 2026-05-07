@@ -10,7 +10,7 @@ $result = $conn->query($sql);
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Ranking Geral - Arcade Language</title>
+    <title>Ranking Geral - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .ranking-table {
@@ -121,7 +121,7 @@ $result = $conn->query($sql);
     </div>
 
     <footer>
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

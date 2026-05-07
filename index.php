@@ -13,7 +13,7 @@ if (isset($_SESSION['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcade Language - O Futuro da Fluência Acadêmica</title>
+    <title>Arcadius Language - O Futuro da Fluência Acadêmica</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .hero {
@@ -77,7 +77,7 @@ if (isset($_SESSION['id'])) {
     <?php include 'includes/navbar.php'; ?>
 
     <header class="hero">
-        <h1 class="glow-text">ARCADE LANGUAGE</h1>
+        <h1 class="glow-text">ARCADIUS LANGUAGE</h1>
         <p>A Evolução Acadêmica de Idiomas</p>
         <div style="margin-top: 20px;">
             <a href="login.php" class="btn" style="padding: 18px 50px; font-size: 1rem;">ACESSAR TERMINAL</a>
@@ -92,7 +92,7 @@ if (isset($_SESSION['id'])) {
             <div style="max-width: 900px; margin: 0 auto;">
                 <h2 style="font-size: 2.2rem; margin-bottom: 25px;">DOMINE NOVOS HORIZONTES</h2>
                 <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.8;">
-                    No Arcade Language, transformamos o aprendizado de línguas em uma experiência imersiva e competitiva. 
+                    No Arcadius Language, transformamos o aprendizado de línguas em uma experiência imersiva e competitiva. 
                     Nossa plataforma utiliza algoritmos acadêmicos para garantir que sua jornada do "Iniciante" ao "Mestre" seja constante, 
                     recompensadora e, acima de tudo, épica.
                 </p>
@@ -149,7 +149,7 @@ if (isset($_SESSION['id'])) {
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

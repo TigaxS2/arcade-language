@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Acesso - Arcade Language</title>
+    <title>Recuperar Acesso - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .auth-page { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 150px); padding: 20px; }
@@ -27,7 +27,7 @@
             <form action="auth/processa_recuperacao.php" method="POST">
                 <div class="input-group">
                     <label>E-mail de Estudante</label>
-                    <input type="email" name="email" placeholder="estudante@arcade.com" required>
+                    <input type="email" name="email" placeholder="estudante@arcadius.com" required>
                 </div>
                 
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">SOLICITAR RESGATE ACADÊMICO</button>
@@ -42,7 +42,7 @@
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

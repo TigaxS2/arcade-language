@@ -64,7 +64,7 @@ $usuarios = $conn->query("SELECT id, nome, email, xp, patente, nivel_acesso FROM
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

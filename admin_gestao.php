@@ -32,7 +32,7 @@ $questoes_stat = $conn->query("
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Gestão Acadêmica - Arcade Language</title>
+    <title>Gestão Acadêmica - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
@@ -135,7 +135,7 @@ $questoes_stat = $conn->query("
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

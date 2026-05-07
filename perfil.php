@@ -14,7 +14,7 @@ $dados = $stmt->get_result()->fetch_assoc();
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Configurações Acadêmicas - Arcade Language</title>
+    <title>Configurações Acadêmicas - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .perfil-layout { display: flex; justify-content: center; padding: 60px 20px; }
@@ -84,7 +84,7 @@ $dados = $stmt->get_result()->fetch_assoc();
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 
     <script>

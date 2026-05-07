@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "arcade_language";
+$db   = "arcadius_language";
 
 $conn = new mysqli($host, $user, $pass, $db);
 

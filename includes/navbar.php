@@ -11,7 +11,7 @@ $fotoPerfil = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSIO
 
 <nav class="main-nav">
     <div class="nav-container">
-        <a href="index.php" class="nav-logo">ARCADE <span>LANGUAGE</span></a>
+        <a href="index.php" class="nav-logo">ARCADIUS <span>LANGUAGE</span></a>
         
         <ul class="nav-links">
             <li><a href="dashboard.php">Home</a></li>

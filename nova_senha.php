@@ -26,7 +26,7 @@ $email_recuperacao = $dados['email'];
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Nova Senha - Arcade Language</title>
+    <title>Nova Senha - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="area-fundo">
@@ -54,7 +54,7 @@ $email_recuperacao = $dados['email'];
         </div>
     </section>
     <footer style="padding: 60px 0; text-align: center; opacity: 0.3;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>

@@ -10,7 +10,7 @@ $primeiroNome = explode(" ", $_SESSION['nome'])[0];
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel Acadêmico - Arcade Language</title>
+    <title>Painel Acadêmico - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="area-fundo">
@@ -57,7 +57,7 @@ $primeiroNome = explode(" ", $_SESSION['nome'])[0];
                 <div class="action-card">
                     <h3>🎮 LABORATÓRIO DE IDIOMAS</h3>
                     <p style="margin: 10px 0 20px; opacity: 0.8;">Participe de desafios interativos. Cada acerto acelera sua graduação acadêmica.</p>
-                    <a href="arena.php" class="btn" style="width: 100%;">Acessar Laboratório</a>
+                    <a href="laboratorio.php" class="btn" style="width: 100%;">Acessar Laboratório</a>
                 </div>
 
                 <div class="action-card">
@@ -83,7 +83,7 @@ $primeiroNome = explode(" ", $_SESSION['nome'])[0];
     </div>
 
     <footer style="padding: 60px 0; text-align: center; opacity: 0.4;">
-        <p>&copy; 2026 Arcade Language | Academic Management System</p>
+        <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>
 </html>
