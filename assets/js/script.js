@@ -27,7 +27,16 @@ const ArcadiusUI = (() => {
             toast.className = `toast ${type}`;
             
             const icons = { success: '✅', error: '⚠️', info: 'ℹ️' };
-            toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span> <span>${message}</span>`;
+            
+            const iconSpan = document.createElement('span');
+            iconSpan.textContent = icons[type] || 'ℹ️';
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = message;
+            
+            toast.appendChild(iconSpan);
+            toast.appendChild(document.createTextNode(' '));
+            toast.appendChild(textSpan);
             
             container.appendChild(toast);
             setTimeout(() => {

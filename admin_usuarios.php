@@ -4,6 +4,9 @@ verificarAdmin();
 require_once 'includes/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validarCSRF($_POST['csrf_token'] ?? '')) {
+        alertarERedirecionar("Erro de validação (CSRF).", "admin_usuarios.php", "error");
+    }
     $user_id = (int)$_POST['user_id'];
     $novo_xp = (int)$_POST['xp'];
     $nivel = calcularNivelEscolaridade($novo_xp);
@@ -50,11 +53,12 @@ $usuarios = $conn->query("SELECT id, nome, email, xp, patente, nivel_acesso FROM
                 <tr>
                     <td style="font-weight: bold;"><?php echo htmlspecialchars($row['nome']); ?></td>
                     <td style="opacity: 0.7;"><?php echo htmlspecialchars($row['email']); ?></td>
-                    <td><span style="font-size: 0.8rem; border: 1px solid var(--neon-gold); padding: 2px 8px; border-radius: 10px; color: var(--neon-gold);"><?php echo strtoupper($row['nivel_acesso']); ?></span></td>
+                    <td><span style="font-size: 0.8rem; border: 1px solid var(--neon-gold); padding: 2px 8px; border-radius: 10px; color: var(--neon-gold);"><?php echo strtoupper(htmlspecialchars($row['nivel_acesso'])); ?></span></td>
                     <form action="admin_usuarios.php" method="POST">
+                        <input type="hidden" name="csrf_token" value="<?php echo gerarCSRF(); ?>">
                         <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                        <td><input type="number" name="xp" value="<?php echo $row['xp']; ?>" style="width: 80px; padding: 5px; background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; border-radius: 5px;"></td>
-                        <td><?php echo $row['patente']; ?></td>
+                        <td><input type="number" name="xp" value="<?php echo (int)$row['xp']; ?>" style="width: 80px; padding: 5px; background: rgba(0,0,0,0.3); border: 1px solid var(--neon-cyan); color: white; border-radius: 5px;"></td>
+                        <td><?php echo htmlspecialchars($row['patente']); ?></td>
                         <td><button type="submit" class="btn" style="padding: 5px 15px; font-size: 0.8rem;">Salvar</button></td>
                     </form>
                 </tr>

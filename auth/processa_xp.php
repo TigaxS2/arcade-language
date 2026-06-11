@@ -8,6 +8,11 @@ if (!isset($_SESSION['id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // 1. VERIFICAÇÃO CSRF
+    if (!validarCSRF($_POST['csrf_token'] ?? '')) {
+        alertarERedirecionar('Erro de validação (CSRF). Tente novamente.', '../arena.php', 'error');
+    }
+
     $pergunta_id = (int)$_POST['pergunta_id'];
     $resposta_usuario = $_POST['resposta'];
     $usuario_id = (int)$_SESSION['id'];

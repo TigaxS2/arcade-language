@@ -3,29 +3,37 @@ require_once 'includes/funcoes.php';
 verificarLogado();
 require_once 'includes/conexao.php';
 
-$usuario_id = $_SESSION['id'];
+$usuario_id = (int)$_SESSION['id'];
 
-// Busca uma pergunta que o usuário ainda não respondeu corretamente
+// Busca uma pergunta que o usuário ainda não respondeu corretamente usando Prepared Statements
 $query = "
     SELECT * FROM perguntas 
     WHERE id NOT IN (
         SELECT pergunta_id FROM log_respostas 
-        WHERE usuario_id = $usuario_id AND is_correto = 1
+        WHERE usuario_id = ? AND is_correto = 1
     ) 
     ORDER BY RAND() LIMIT 1
 ";
-$resultado = $conn->query($query);
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
 $pergunta = $resultado->fetch_assoc();
+$stmt->close();
 
 // Conta quantas faltam
 $total_restante_query = "
     SELECT COUNT(*) as total FROM perguntas 
     WHERE id NOT IN (
         SELECT pergunta_id FROM log_respostas 
-        WHERE usuario_id = $usuario_id AND is_correto = 1
+        WHERE usuario_id = ? AND is_correto = 1
     )
 ";
-$total_restante = $conn->query($total_restante_query)->fetch_assoc()['total'];
+$stmt_count = $conn->prepare($total_restante_query);
+$stmt_count->bind_param("i", $usuario_id);
+$stmt_count->execute();
+$total_restante = $stmt_count->get_result()->fetch_assoc()['total'];
+$stmt_count->close();
 ?>
 
 <!DOCTYPE html>
@@ -67,12 +75,13 @@ $total_restante = $conn->query($total_restante_query)->fetch_assoc()['total'];
         <div class="quiz-card card">
             <?php if ($pergunta): ?>
                 <div style="text-align: center;">
-                    <div class="reward-badge">RECOMPENSA: +<?php echo $pergunta['xp_recompensa']; ?> XP ACADÊMICO</div>
+                    <div class="reward-badge">RECOMPENSA: +<?php echo (int)$pergunta['xp_recompensa']; ?> XP ACADÊMICO</div>
                     <h2 style="margin-bottom: 40px; font-size: 1.8rem; line-height: 1.3;"><?php echo htmlspecialchars($pergunta['pergunta']); ?></h2>
                 </div>
                 
                 <form action="auth/processa_xp.php" method="POST">
-                    <input type="hidden" name="pergunta_id" value="<?php echo $pergunta['id']; ?>">
+                    <input type="hidden" name="csrf_token" value="<?php echo gerarCSRF(); ?>">
+                    <input type="hidden" name="pergunta_id" value="<?php echo (int)$pergunta['id']; ?>">
                     
                     <button type="submit" name="resposta" value="A" class="option-btn"><span class="option-letter">A</span> <?php echo htmlspecialchars($pergunta['opcao_a']); ?></button>
                     <button type="submit" name="resposta" value="B" class="option-btn"><span class="option-letter">B</span> <?php echo htmlspecialchars($pergunta['opcao_b']); ?></button>
@@ -81,7 +90,7 @@ $total_restante = $conn->query($total_restante_query)->fetch_assoc()['total'];
                 </form>
 
                 <div style="text-align: center;" class="progress-info">
-                    Módulos restantes neste nível: <?php echo $total_restante; ?>
+                    Módulos restantes neste nível: <?php echo (int)$total_restante; ?>
                 </div>
             <?php else: ?>
                 <div style="text-align: center; padding: 40px;">

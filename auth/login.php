@@ -3,21 +3,26 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
 
+require_once '../includes/config.php';
 require_once '../includes/conexao.php';
 require_once '../includes/funcoes.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST['email']);
-    $senha = trim($_POST['senha']);
-    $turnstileResponse = $_POST['cf-turnstile-response'];
+    // 1. VERIFICAÇÃO CSRF
+    if (!validarCSRF($_POST['csrf_token'] ?? '')) {
+        alertarERedirecionar('Erro de validação (CSRF). Tente novamente.', '../login.php', 'error');
+    }
 
-    // --- VERIFICAÇÃO TURNSTILE ---
-    $secret = "1x0000000000000000000000000000000AA";
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $senha = trim($_POST['senha']);
+    $turnstileResponse = $_POST['cf-turnstile-response'] ?? '';
+
+    // 2. VERIFICAÇÃO TURNSTILE
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "https://challenges.cloudflare.com/turnstile/v0/siteverify");
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'secret'   => $secret,
+        'secret'   => TURNSTILE_SECRET,
         'response' => $turnstileResponse,
         'remoteip' => $_SERVER['REMOTE_ADDR']
     ]));
@@ -39,16 +44,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultado->num_rows > 0) {
         $usuario = $resultado->fetch_assoc();
         
-        // --- VERIFICAÇÃO DE HASH ---
         if (password_verify($senha, $usuario['senha'])) {
-            // Sucesso! Grava na Sessão
+            // Sucesso! Regenera o ID da sessão para prevenir Session Fixation
+            session_regenerate_id(true);
+            
+            // Grava na Sessão
             $_SESSION['id'] = $usuario['id'];
             $_SESSION['nome'] = $usuario['nome'];
-            $_SESSION['patente'] = $usuario['patente']; // Grau de Escolaridade
+            $_SESSION['patente'] = $usuario['patente'];
             $_SESSION['xp'] = $usuario['xp'];
-            $_SESSION['nivel_acesso'] = $usuario['nivel_acesso']; // Admin/User
-            
-            // Define a foto ou a padrão
+            $_SESSION['nivel_acesso'] = $usuario['nivel_acesso'];
             $_SESSION['foto'] = (!empty($usuario['foto'])) ? $usuario['foto'] : 'assets/img/default.png';
 
             // REGISTRA ACESSO DIÁRIO

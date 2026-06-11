@@ -1,4 +1,5 @@
 <?php
+require_once 'includes/config.php';
 require_once 'includes/funcoes.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
@@ -14,52 +15,61 @@ if (isset($_SESSION['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matrícula Acadêmica - Arcadius Language</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth_new.css">
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <style>
-        .auth-page { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 80px); padding: 20px; }
-        .cadastro-card { width: 100%; max-width: 450px; }
-    </style>
 </head>
-<body>
+<body class="auth-body-page">
     <?php include 'includes/navbar.php'; ?>
 
-    <div class="auth-page">
-        <div class="cadastro-card">
-            <header style="text-align: center; margin-bottom: 35px;">
-                <h1 class="glow-text" style="font-size: 2.5rem; margin-bottom: 5px;">MATRÍCULA</h1>
-                <p style="font-size: 0.85rem; color: var(--neon-cyan); letter-spacing: 3px; opacity: 0.8;">REGISTRO DE NOVO ACADÊMICO</p>
-            </header>
-            
-            <form action="auth/processa_cadastro.php" method="POST">
-                <div class="input-group">
-                    <label>Nome Completo</label>
-                    <input type="text" name="nome" placeholder="Ex: Alan Turing" required>
-                </div>
+    <!-- Background Elements -->
+    <div class="auth-bg-wrapper">
+        <div class="auth-circle"></div>
+        <div class="auth-ring"></div>
+        <div class="auth-line"></div>
+    </div>
 
-                <div class="input-group">
-                    <label>E-mail Institucional</label>
-                    <input type="email" name="email" placeholder="seu@email.com" required>
-                </div>
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Form Side -->
+            <div class="auth-form-side">
+                <h1>Crie sua conta<span>.</span></h1>
+                
+                <form action="auth/processa_cadastro.php" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo gerarCSRF(); ?>">
+                    
+                    <div class="auth-input-group">
+                        <label>Nome Completo</label>
+                        <input type="text" name="nome" placeholder="Ex: Alan Turing" required>
+                    </div>
 
-                <div class="input-group">
-                    <label>Definir Chave de Acesso</label>
-                    <input type="password" name="senha" id="senha" placeholder="••••••••" required>
+                    <div class="auth-input-group">
+                        <label>E-mail Institucional</label>
+                        <input type="email" name="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="auth-input-group">
+                        <label>Definir Chave de Acesso</label>
+                        <input type="password" name="senha" id="senha" placeholder="••••••••" required>
+                    </div>
+                    
+                    <div class="cf-turnstile" data-sitekey="<?php echo TURNSTILE_SITEKEY; ?>"></div>
+                    
+                    <button type="submit" class="auth-submit-btn">Finalizar Matrícula</button>
+                </form>
+                
+                <div class="auth-switch-text">
+                    Já possui registro? <a href="login.php">Acessar Terminal</a>
                 </div>
-                
-                <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" style="margin-bottom: 15px;"></div>
-                
-                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">FINALIZAR MATRÍCULA</button>
-            </form>
-            
-            <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; text-align: center;">
-                <p style="font-size: 0.9rem; opacity: 0.8;">
-                    Já possui registro? <a href="login.php" class="cyber-link-bold">Acessar Terminal</a>
-                </p>
+            </div>
+
+            <!-- Image Side -->
+            <div class="auth-image-side">
+                <img src="assets/img/Imgloginpage.png" alt="Registration Background">
             </div>
         </div>
     </div>
 
-    <footer style="padding: 40px 0; text-align: center; opacity: 0.3;">
+    <footer style="padding: 20px 0; text-align: center; opacity: 0.3; position: relative; z-index: 10; color: white;">
         <p>&copy; 2026 Arcadius Language | Academic Management System</p>
     </footer>
 </body>

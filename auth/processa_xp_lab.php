@@ -5,7 +5,8 @@ require_once '../includes/funcoes.php';
 
 // Log de depuração
 function debug_log($msg) {
-    file_put_contents('debug_xp.log', date('[Y-m-d H:i:s] ') . $msg . PHP_EOL, FILE_APPEND);
+    if (defined('APP_ENV') && APP_ENV === 'production') return;
+    file_put_contents(__DIR__ . '/debug_xp.log', date('[Y-m-d H:i:s] ') . $msg . PHP_EOL, FILE_APPEND);
 }
 
 header('Content-Type: application/json');
@@ -22,6 +23,14 @@ debug_log("Requisição recebida do Usuário ID: " . $_SESSION['id']);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($data['token_seguranca']) && $data['token_seguranca'] === 'ARCADIUS_LAB_XP_2026') {
+        
+        // Validação CSRF
+        if (!validarCSRF($data['csrf_token'] ?? '')) {
+            debug_log("ERRO: Falha na validação CSRF.");
+            echo json_encode(['success' => false, 'message' => 'Erro de segurança (CSRF)']);
+            exit;
+        }
+
         $usuario_id = (int)$_SESSION['id'];
         $ganho_xp = 10;
 

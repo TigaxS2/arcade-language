@@ -62,17 +62,17 @@ $questoes_stat = $conn->query("
         <!-- CARDS DE RESUMO -->
         <div class="stats-grid">
             <div class="stat-box card">
-                <h2><?php echo $total_estudantes; ?></h2>
+                <h2><?php echo (int)$total_estudantes; ?></h2>
                 <p>ESTUDANTES ATIVOS</p>
             </div>
             <div class="stat-box card" style="border-color: var(--neon-purple);">
-                <h2><?php echo $questoes_ativas; ?></h2>
+                <h2><?php echo (int)$questoes_ativas; ?></h2>
                 <p>QUESTÕES NO CAMPUS</p>
             </div>
             <div class="stat-box card" style="border-color: var(--neon-magenta);">
                 <h2><?php 
                     $total_resp = $conn->query("SELECT COUNT(*) as total FROM log_respostas")->fetch_assoc()['total'];
-                    echo $total_resp;
+                    echo (int)$total_resp;
                 ?></h2>
                 <p>DESAFIOS CONCLUÍDOS</p>
             </div>
@@ -87,8 +87,8 @@ $questoes_stat = $conn->query("
                     <?php while($row = $acessos_query->fetch_assoc()): ?>
                         <?php $h = ($row['qtd'] / ($total_estudantes > 0 ? $total_estudantes : 1)) * 100 + 10; ?>
                         <div class="bar" style="height: <?php echo min($h, 100); ?>%;">
-                            <span class="bar-value"><?php echo $row['qtd']; ?></span>
-                            <span class="bar-label"><?php echo date('d/m', strtotime($row['data_acesso'])); ?></span>
+                            <span class="bar-value"><?php echo (int)$row['qtd']; ?></span>
+                            <span class="bar-label"><?php echo htmlspecialchars(date('d/m', strtotime($row['data_acesso']))); ?></span>
                         </div>
                     <?php endwhile; ?>
                 </div>
@@ -116,9 +116,9 @@ $questoes_stat = $conn->query("
                                 ?>
                                 <tr style="border-bottom: 1px solid var(--glass-border);">
                                     <td style="padding: 10px 0; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?php echo htmlspecialchars($q['pergunta']); ?></td>
-                                    <td style="color: #00ff88;"><?php echo $q['acertos']; ?></td>
-                                    <td style="color: #ff4d4d;"><?php echo $q['erros']; ?></td>
-                                    <td style="font-weight: bold;"><?php echo $taxa; ?>%</td>
+                                    <td style="color: #00ff88;"><?php echo (int)$q['acertos']; ?></td>
+                                    <td style="color: #ff4d4d;"><?php echo (int)$q['erros']; ?></td>
+                                    <td style="font-weight: bold;"><?php echo (int)$taxa; ?>%</td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>

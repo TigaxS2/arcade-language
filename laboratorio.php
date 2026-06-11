@@ -107,7 +107,10 @@ if (empty($questoes)) {
                     const response = await fetch('auth/processa_xp_lab.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ token_seguranca: 'ARCADIUS_LAB_XP_2026' })
+                        body: JSON.stringify({ 
+                            token_seguranca: 'ARCADIUS_LAB_XP_2026',
+                            csrf_token: '<?php echo gerarCSRF(); ?>'
+                        })
                     });
                     
                     if (!response.ok) {

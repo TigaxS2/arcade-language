@@ -25,7 +25,7 @@ $fotoPerfil = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSIO
             <?php if(isset($_SESSION['id'])): ?>
                 <li class="user-profile-nav">
                     <a href="perfil.php" class="nav-user">
-                        <img src="<?php echo $fotoPerfil; ?>" class="nav-avatar" alt="Perfil">
+                        <img src="<?php echo htmlspecialchars($fotoPerfil); ?>" class="nav-avatar" alt="Perfil">
                         <span>Olá, <?php echo htmlspecialchars($primeiroNome); ?></span>
                     </a>
                 </li>

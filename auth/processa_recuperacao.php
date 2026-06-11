@@ -1,26 +1,28 @@
 <?php
+require_once '../includes/config.php';
 require_once '../includes/conexao.php';
 require_once '../includes/funcoes.php';
 
-// CONFIGURAÇÃO DA API RESEND
-// Pegue sua chave em: https://resend.com/api-keys
-define('RESEND_API_KEY', 're_Ev6EYFpJ_mmPtGaLesC4xwjE5Yu5tRhCj'); 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST['email']);
+    // 1. VERIFICAÇÃO CSRF
+    if (!validarCSRF($_POST['csrf_token'] ?? '')) {
+        alertarERedirecionar('Erro de validação (CSRF). Tente novamente.', '../esqueci_senha.php', 'error');
+    }
+
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     
-    // 1. Verifica se o e-mail existe no sistema
+    // 2. Verifica se o e-mail existe no sistema
     $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
     
     if ($result->num_rows > 0) {
-        // 2. Gera um token único e seguro
+        // 3. Gera um token único e seguro
         $token = bin2hex(random_bytes(32));
         $expiracao = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-        // 3. Salva o token no banco (Remove anteriores para o mesmo email)
+        // 4. Salva o token no banco (Remove anteriores para o mesmo email)
         $stmt_del = $conn->prepare("DELETE FROM recuperacao_senha WHERE email = ?");
         $stmt_del->bind_param("s", $email);
         $stmt_del->execute();
@@ -30,11 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_token->bind_param("sss", $email, $token, $expiracao);
         $stmt_token->execute();
 
-        // 4. Monta o link de recuperação
+        // 5. Monta o link de recuperação
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
         $link = $protocol . $_SERVER['HTTP_HOST'] . "/arcadius-language/nova_senha.php?token=" . $token;
 
-        // 5. Envia o e-mail via Resend API
+        // 6. Envia o e-mail via Resend API
         $assunto = "Recuperação de Acesso - Arcadius Language";
         $mensagem_html = "
             <div style='background: #0a0a0c; color: #fff; padding: 40px; font-family: sans-serif; border: 1px solid #00f0ff;'>
@@ -53,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $resend_url = 'https://api.resend.com/emails';
         $resend_data = [
-            'from' => 'Arcadius Language <onboarding@resend.dev>', // Use um domínio verificado se tiver
+            'from' => 'Arcadius Language <onboarding@resend.dev>', 
             'to' => [$email],
             'subject' => $assunto,
             'html' => $mensagem_html
@@ -72,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        // Exibe tela de sucesso (Independente se o envio de fato ocorreu, por segurança e teste)
         ?>
         <!DOCTYPE html>
         <html lang="pt-BR">
@@ -140,8 +141,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="debug-box">
                         <p style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">[ MODO ACADÊMICO ]: Link de Redirecionamento</p>
-                        <a href="<?php echo $link; ?>" style="color: #ff00ff; font-size: 0.85rem; word-break: break-all; text-decoration: none; border-bottom: 1px dashed #ff00ff;">
-                            <?php echo $link; ?>
+                        <a href="<?php echo htmlspecialchars($link); ?>" style="color: #ff00ff; font-size: 0.85rem; word-break: break-all; text-decoration: none; border-bottom: 1px dashed #ff00ff;">
+                            <?php echo htmlspecialchars($link); ?>
                         </a>
                     </div>
                     

@@ -30,21 +30,21 @@ $primeiroNome = explode(" ", $_SESSION['nome'])[0];
                     <?php 
                         $foto = (isset($_SESSION['foto']) && !empty($_SESSION['foto'])) ? $_SESSION['foto'] : 'assets/img/default.png';
                     ?>
-                    <img src="<?php echo $foto; ?>" class="status-avatar" alt="" onerror="this.src='assets/img/default.png';">
+                    <img src="<?php echo htmlspecialchars($foto); ?>" class="status-avatar" alt="" onerror="this.src='assets/img/default.png';">
                 </div>
                 
                 <h2 style="text-align: center; margin-bottom: 20px; width: 100%;"><?php echo htmlspecialchars($_SESSION['nome']); ?></h2>
                 
                 <ul style="list-style: none; width: 100%;">
                     <li style="margin-bottom: 10px;">🎖️ Nível: <span style="color: var(--neon-cyan); font-weight: bold;"><?php echo htmlspecialchars($_SESSION['patente']); ?></span></li>
-                    <li style="margin-bottom: 5px;">💎 XP: <span style="color: var(--neon-cyan); font-weight: bold;"><?php echo htmlspecialchars($_SESSION['xp']); ?></span> / 500</li>
+                    <li style="margin-bottom: 5px;">💎 XP: <span style="color: var(--neon-cyan); font-weight: bold;"><?php echo (int)$_SESSION['xp']; ?></span> / 500</li>
                     
                     <div class="xp-progress-container">
                         <?php 
-                            $percentual = ($_SESSION['xp'] / 500) * 100; 
+                            $percentual = ((int)$_SESSION['xp'] / 500) * 100; 
                             if ($percentual > 100) $percentual = 100;
                         ?>
-                        <div class="xp-progress-bar" style="width: <?php echo $percentual; ?>%;"></div>
+                        <div class="xp-progress-bar" style="width: <?php echo (float)$percentual; ?>%;"></div>
                     </div>
                 </ul>
 

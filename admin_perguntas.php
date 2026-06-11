@@ -1,39 +1,46 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// --- LÓGICA DE EXCLUSÃO (EXECUTAR ANTES DE QUALQUER COISA) ---
+require_once 'includes/config.php';
 require_once 'includes/conexao.php';
-if (isset($_POST['excluir_id'])) {
+require_once 'includes/funcoes.php';
+verificarAdmin(); 
+
+// --- LÓGICA DE EXCLUSÃO ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir_id'])) {
+    if (!validarCSRF($_POST['csrf_token'] ?? '')) {
+        alertarERedirecionar("Erro de validação (CSRF).", "admin_perguntas.php", "error");
+    }
+
     $id_excluir = (int)$_POST['excluir_id'];
     
     // Deleta logs e depois a pergunta
     $stmt_log = $conn->prepare("DELETE FROM log_respostas WHERE pergunta_id = ?");
     $stmt_log->bind_param("i", $id_excluir);
     $stmt_log->execute();
+    $stmt_log->close();
 
     $stmt_del = $conn->prepare("DELETE FROM perguntas WHERE id = ?");
     $stmt_del->bind_param("i", $id_excluir);
     $res = $stmt_del->execute();
+    $stmt_del->close();
     
     if ($res) {
-        header("Location: admin_perguntas.php?msg=Pergunta Removida do Campus!&type=success");
-        exit();
+        alertarERedirecionar("Pergunta Removida do Campus!", "admin_perguntas.php", "success");
     }
 }
 
-require_once 'includes/funcoes.php';
-verificarAdmin(); 
-
 // --- LÓGICA DE SALVAR/EDITAR ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pergunta'])) {
-    $id = $_POST['id'] ?? null;
-    $pergunta = $_POST['pergunta'];
-    $oa = $_POST['opcao_a'];
-    $ob = $_POST['opcao_b'];
-    $oc = $_POST['opcao_c'];
-    $od = $_POST['opcao_d'];
-    $resp = $_POST['resposta_correta'];
+    if (!validarCSRF($_POST['csrf_token'] ?? '')) {
+        alertarERedirecionar("Erro de validação (CSRF).", "admin_perguntas.php", "error");
+    }
+
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
+    $pergunta = sanitize($_POST['pergunta']);
+    $oa = sanitize($_POST['opcao_a']);
+    $ob = sanitize($_POST['opcao_b']);
+    $oc = sanitize($_POST['opcao_c']);
+    $od = sanitize($_POST['opcao_d']);
+    $resp = sanitize($_POST['resposta_correta']);
     $xp = (int)$_POST['xp_recompensa'];
 
     if ($id) {
@@ -45,13 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pergunta'])) {
     }
     
     if ($stmt->execute()) {
-        header("Location: admin_perguntas.php?msg=Módulo Acadêmico Salvo com Sucesso!&type=success");
-        exit();
+        $stmt->close();
+        alertarERedirecionar("Módulo Acadêmico Salvo com Sucesso!", "admin_perguntas.php", "success");
     }
-}
-
-if (isset($_GET['msg'])) {
-    // A lógica de exibição agora é automática via script.js e handleURLMessages
 }
 
 $perguntas = $conn->query("SELECT * FROM perguntas ORDER BY id DESC");
@@ -62,6 +65,7 @@ if (isset($_GET['editar'])) {
     $stmt_edit->bind_param("i", $id_edit);
     $stmt_edit->execute();
     $edit_data = $stmt_edit->get_result()->fetch_assoc();
+    $stmt_edit->close();
 }
 ?>
 
@@ -90,17 +94,18 @@ if (isset($_GET['editar'])) {
         <div class="admin-form">
             <h3><?php echo $edit_data ? 'Editar Pergunta' : 'Nova Pergunta'; ?></h3>
             <form action="admin_perguntas.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo gerarCSRF(); ?>">
                 <?php if($edit_data): ?>
                     <input type="hidden" name="id" value="<?php echo $edit_data['id']; ?>">
                 <?php endif; ?>
                 
-                <textarea name="pergunta" placeholder="Digite a pergunta aqui..." required><?php echo $edit_data['pergunta'] ?? ''; ?></textarea>
+                <textarea name="pergunta" placeholder="Digite a pergunta aqui..." required><?php echo htmlspecialchars($edit_data['pergunta'] ?? ''); ?></textarea>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <input type="text" name="opcao_a" placeholder="Opção A" value="<?php echo $edit_data['opcao_a'] ?? ''; ?>" required>
-                    <input type="text" name="opcao_b" placeholder="Opção B" value="<?php echo $edit_data['opcao_b'] ?? ''; ?>" required>
-                    <input type="text" name="opcao_c" placeholder="Opção C" value="<?php echo $edit_data['opcao_c'] ?? ''; ?>" required>
-                    <input type="text" name="opcao_d" placeholder="Opção D" value="<?php echo $edit_data['opcao_d'] ?? ''; ?>" required>
+                    <input type="text" name="opcao_a" placeholder="Opção A" value="<?php echo htmlspecialchars($edit_data['opcao_a'] ?? ''); ?>" required>
+                    <input type="text" name="opcao_b" placeholder="Opção B" value="<?php echo htmlspecialchars($edit_data['opcao_b'] ?? ''); ?>" required>
+                    <input type="text" name="opcao_c" placeholder="Opção C" value="<?php echo htmlspecialchars($edit_data['opcao_c'] ?? ''); ?>" required>
+                    <input type="text" name="opcao_d" placeholder="Opção D" value="<?php echo htmlspecialchars($edit_data['opcao_d'] ?? ''); ?>" required>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -111,7 +116,7 @@ if (isset($_GET['editar'])) {
                         <option value="C" <?php echo ($edit_data && $edit_data['resposta_correta'] == 'C') ? 'selected' : ''; ?>>Opção C</option>
                         <option value="D" <?php echo ($edit_data && $edit_data['resposta_correta'] == 'D') ? 'selected' : ''; ?>>Opção D</option>
                     </select>
-                    <input type="number" name="xp_recompensa" placeholder="XP Recompensa" value="<?php echo $edit_data['xp_recompensa'] ?? '50'; ?>" required>
+                    <input type="number" name="xp_recompensa" placeholder="XP Recompensa" value="<?php echo (int)($edit_data['xp_recompensa'] ?? '50'); ?>" required>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 20px;">
@@ -136,12 +141,13 @@ if (isset($_GET['editar'])) {
                 <?php while($row = $perguntas->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo htmlspecialchars(substr($row['pergunta'], 0, 50)) . '...'; ?></td>
-                    <td><?php echo $row['resposta_correta']; ?></td>
-                    <td><?php echo $row['xp_recompensa']; ?></td>
+                    <td><?php echo htmlspecialchars($row['resposta_correta']); ?></td>
+                    <td><?php echo (int)$row['xp_recompensa']; ?></td>
                     <td style="display: flex; gap: 15px; align-items: center;">
                         <a href="admin_perguntas.php?editar=<?php echo $row['id']; ?>" class="cyber-link-bold">Editar</a>
                         
                         <form action="admin_perguntas.php" method="POST" onsubmit="return confirm('Deseja excluir?');" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="<?php echo gerarCSRF(); ?>">
                             <input type="hidden" name="excluir_id" value="<?php echo $row['id']; ?>">
                             <button type="submit" class="btn-delete-trigger">Excluir</button>
                         </form>

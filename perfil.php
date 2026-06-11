@@ -38,6 +38,7 @@ $dados = $stmt->get_result()->fetch_assoc();
             <h1 class="glow-text" style="text-align: center; font-size: 2rem; margin-bottom: 40px;">PERFIL ACADÊMICO</h1>
             
             <form action="auth/update_perfil.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo gerarCSRF(); ?>">
                 
                 <!-- AVATAR UPLOAD -->
                 <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; width: 100%;">
